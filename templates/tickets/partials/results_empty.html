@@ -1,0 +1,10 @@
+<div class="text-center py-20">
+    <div class="w-24 h-24 rounded-full bg-gray-100 flex items-center justify-center text-gray-300 text-5xl mx-auto mb-6">
+        <i class="fa-solid fa-bus"></i>
+    </div>
+    <h2 class="text-3xl font-black text-brand-black mb-3">Sin resultados</h2>
+    <p class="text-gray-500 mb-6">No encontramos recorridos para {{ search_origin.name }} → {{ search_destination.name }} en esa fecha.</p>
+    <a href="{% url 'home' %}" class="inline-block bg-brand-red hover:bg-brand-darkred text-white font-bold px-8 py-3 rounded-full transition-all shadow-md">
+        Volver a buscar
+    </a>
+</div>

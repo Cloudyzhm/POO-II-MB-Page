@@ -1,0 +1,45 @@
+body { font-family: 'Inter', sans-serif; background-color: #f5f5f5; }
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+@keyframes swoosh-1 {
+    0%, 100% { transform: translateX(-2%) translateY(-2%); }
+    50% { transform: translateX(2%) translateY(2%); }
+}
+@keyframes swoosh-2 {
+    0%, 100% { transform: translateX(2%) translateY(2%); }
+    50% { transform: translateX(-2%) translateY(-2%); }
+}
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+.animate-swoosh-1 { animation: swoosh-1 12s ease-in-out infinite; }
+.animate-swoosh-2 { animation: swoosh-2 16s ease-in-out infinite; }
+.animate-shake { animation: shake 0.3s ease-in-out; }
+.animate-fade-in { animation: fadeIn 0.3s ease-in-out; }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.bus-card {
+    border-left: 6px solid transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.bus-card:hover {
+    border-left: 6px solid #e60000;
+    transform: translateX(4px);
+}
+@keyframes subtle-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+.animate-subtle-pulse { animation: subtle-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+@keyframes listFadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.animate-list-entrance {
+    opacity: 0;
+    animation: listFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}

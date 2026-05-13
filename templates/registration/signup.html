@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Crear cuenta - Magabus{% endblock %}
+
+{% block content %}
+<div class="min-h-[60vh] flex items-center justify-center py-12">
+    <div class="w-full max-w-md mx-auto px-4">
+        <div class="bg-white rounded-[2rem] shadow-soft p-8 md:p-10 border border-gray-100">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 rounded-full bg-brand-red/10 flex items-center justify-center text-brand-red text-2xl mx-auto mb-4">
+                    <i class="fa-solid fa-user-plus"></i>
+                </div>
+                <h2 class="text-3xl font-black text-brand-black">Crear cuenta</h2>
+                <p class="text-gray-500 mt-2 text-sm">Regístrate para acceder a tu dashboard</p>
+            </div>
+
+            <form method="post" class="space-y-4">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit" class="w-full bg-brand-red hover:bg-brand-darkred text-white font-black py-3 px-4 rounded-xl transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                    CREAR CUENTA
+                </button>
+            </form>
+
+            <div class="mt-6 text-center text-sm text-gray-500">
+                ¿Ya tienes cuenta?
+                <a href="{% url 'login' %}" class="text-brand-red font-bold hover:text-brand-darkred transition-colors">Inicia sesión</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

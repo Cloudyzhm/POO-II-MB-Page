@@ -1,0 +1,60 @@
+<section id="destinos" class="py-20 bg-brand-gray relative z-10">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-12" data-aos="fade-up">
+            <div>
+                <h2 class="text-4xl font-black text-brand-black uppercase tracking-tight">Rutas <span class="text-brand-red">Destacadas</span></h2>
+                <p class="text-gray-500 font-medium mt-2 text-lg">Los trayectos más solicitados por nuestros pasajeros.</p>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white rounded-[2rem] overflow-hidden shadow-soft hover:shadow-soft-red border border-gray-100 group relative hover:-translate-y-2 transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
+                <div class="h-56 overflow-hidden relative">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-black/60 to-transparent z-10"></div>
+                    <img src="https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=1974&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Sur">
+                    <div class="absolute bottom-4 left-4 text-white z-20">
+                        <span class="bg-brand-red px-3 py-1 rounded-full text-xs font-bold tracking-wide shadow-md">Concepción</span>
+                    </div>
+                </div>
+                <div class="p-8">
+                    <h3 class="font-black text-2xl text-brand-black mb-2 flex items-center">Concepción <i class="fa-solid fa-arrow-right-long text-brand-red mx-3 text-sm"></i> Coelemu</h3>
+                    <p class="text-gray-500 text-sm mb-6 leading-relaxed">Salidas diarias desde el terminal de Concepción con destino a Coelemu y localidades aledañas.</p>
+                    <a href="#tab-compra" onclick="document.getElementById('tab-compra').click(); document.getElementById('origen-compra').value='{{ towns.0.id }}'" class="text-brand-black font-bold uppercase text-sm hover:text-brand-red transition-colors flex items-center w-max">
+                        Ver horarios <i class="fa-solid fa-chevron-right ml-2 text-xs"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="bg-brand-black rounded-[2rem] overflow-hidden shadow-soft hover:shadow-soft-red border border-gray-800 group relative hover:-translate-y-2 transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
+                <div class="h-56 overflow-hidden relative">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-black/90 to-transparent z-10"></div>
+                    <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=2069&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 grayscale opacity-80" alt="Costa">
+                    <div class="absolute top-4 left-4 z-20">
+                        <span class="bg-white text-brand-black px-3 py-1 rounded-full text-xs font-bold tracking-wide shadow-md flex items-center"><i class="fa-solid fa-fire text-brand-red mr-1.5"></i> Rutas</span>
+                    </div>
+                </div>
+                <div class="p-8 text-white">
+                    <h3 class="font-black text-2xl mb-2 flex items-center">Quirihue <i class="fa-solid fa-arrow-right-long text-gray-500 mx-3 text-sm"></i> Concepción</h3>
+                    <p class="text-gray-400 text-sm mb-6 leading-relaxed">Viaje desde Quirihue con paradas en Coelemu hasta Concepción. Múltiples horarios todos los días.</p>
+                    <a href="#tab-compra" onclick="activateTab('compra')" class="text-brand-red font-bold uppercase text-sm hover:text-white transition-colors flex items-center w-max">
+                        Ver horarios <i class="fa-solid fa-chevron-right ml-2 text-xs"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="bg-white rounded-[2rem] overflow-hidden shadow-soft hover:shadow-soft-red border border-gray-100 group relative hover:-translate-y-2 transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
+                <div class="h-56 overflow-hidden relative">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-black/60 to-transparent z-10"></div>
+                    <img src="https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?q=80&w=2060&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Norte">
+                    <div class="absolute bottom-4 left-4 text-white z-20">
+                        <span class="bg-brand-red px-3 py-1 rounded-full text-xs font-bold tracking-wide shadow-md">Costa</span>
+                    </div>
+                </div>
+                <div class="p-8">
+                    <h3 class="font-black text-2xl text-brand-black mb-2 flex items-center">Concepción <i class="fa-solid fa-arrow-right-long text-brand-red mx-3 text-sm"></i> Buchupureo</h3>
+                    <p class="text-gray-500 text-sm mb-6 leading-relaxed">Recorre la costa desde Concepción hasta Buchupureo pasando por Coelemu, Quirihue y Cobquecura.</p>
+                    <a href="#tab-compra" onclick="activateTab('compra')" class="text-brand-black font-bold uppercase text-sm hover:text-brand-red transition-colors flex items-center w-max">
+                        Ver horarios <i class="fa-solid fa-chevron-right ml-2 text-xs"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

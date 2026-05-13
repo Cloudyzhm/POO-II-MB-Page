@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Magabus{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-12">
+    <div class="mb-10" data-aos="fade-up">
+        <h1 class="text-4xl font-black text-brand-black">Bienvenid@, <span class="text-brand-red">{{ user.username }}</span></h1>
+        <p class="text-gray-500 mt-2">Panel de control de tu cuenta Magabus.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12" data-aos="fade-up" data-aos-delay="100">
+        <div class="bg-white rounded-2xl p-6 shadow-soft border border-gray-100 flex items-center gap-4">
+            <div class="w-14 h-14 rounded-2xl bg-brand-red/10 flex items-center justify-center text-brand-red text-xl">
+                <i class="fa-solid fa-ticket"></i>
+            </div>
+            <div>
+                <p class="text-3xl font-black text-brand-black">{{ active_count }}</p>
+                <p class="text-gray-500 text-sm font-semibold">Pasajes activos</p>
+            </div>
+        </div>
+        <div class="bg-white rounded-2xl p-6 shadow-soft border border-gray-100 flex items-center gap-4">
+            <div class="w-14 h-14 rounded-2xl bg-brand-red/10 flex items-center justify-center text-brand-red text-xl">
+                <i class="fa-solid fa-check-circle"></i>
+            </div>
+            <div>
+                <p class="text-3xl font-black text-brand-black">{{ used_count }}</p>
+                <p class="text-gray-500 text-sm font-semibold">Viajes realizados</p>
+            </div>
+        </div>
+        <div class="bg-white rounded-2xl p-6 shadow-soft border border-gray-100 flex items-center gap-4">
+            <div class="w-14 h-14 rounded-2xl bg-brand-red/10 flex items-center justify-center text-brand-red text-xl">
+                <i class="fa-solid fa-ban"></i>
+            </div>
+            <div>
+                <p class="text-3xl font-black text-brand-black">{{ cancelled_count }}</p>
+                <p class="text-gray-500 text-sm font-semibold">Anulados</p>
+            </div>
+        </div>
+        <div class="bg-white rounded-2xl p-6 shadow-soft border border-gray-100 flex items-center gap-4">
+            <div class="w-14 h-14 rounded-2xl bg-brand-red/10 flex items-center justify-center text-brand-red text-xl">
+                <i class="fa-solid fa-star"></i>
+            </div>
+            <div>
+                <p class="text-3xl font-black text-brand-black">{{ user.tickets.count }}</p>
+                <p class="text-gray-500 text-sm font-semibold">Total pasajes</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-[2rem] p-8 md:p-10 shadow-soft border border-gray-100" data-aos="fade-up" data-aos-delay="200">
+        <h2 class="text-2xl font-black text-brand-black mb-6">Tus pasajes</h2>
+
+        {% if upcoming_tickets %}
+            <div class="space-y-4">
+                {% for ticket in upcoming_tickets %}
+                    <div class="border border-gray-100 rounded-2xl p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4 hover:shadow-soft transition-all">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-brand-red/10 flex items-center justify-center text-brand-red">
+                                <i class="fa-solid fa-bus"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-brand-black">{{ ticket.schedule.route.name }}</p>
+                                <p class="text-sm text-gray-500">
+                                    <i class="fa-regular fa-calendar mr-1"></i> {{ ticket.travel_date|date:"d/m/Y" }}
+                                    <span class="mx-2">•</span>
+                                    <i class="fa-regular fa-clock mr-1"></i> {{ ticket.schedule.departure_time|time:"H:i" }} hrs
+                                </p>
+                                <p class="text-sm text-gray-400">
+                                    Código: <span class="font-mono font-bold text-brand-black">{{ ticket.ticket_code }}</span>
+                                    <span class="mx-2">•</span>
+                                    Bajada: {{ ticket.drop_off_stop.town.name }}
+                                    <span class="mx-2">•</span>
+                                    ${{ ticket.price }}
+                                </p>
+                            </div>
+                        </div>
+                        <span class="px-4 py-1.5 rounded-full text-xs font-bold bg-green-100 text-green-700 self-start md:self-center">
+                            {{ ticket.get_status_display }}
+                        </span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-12">
+                <div class="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 text-3xl mx-auto mb-4">
+                    <i class="fa-solid fa-bus"></i>
+                </div>
+                <p class="text-gray-500 font-medium">No tienes pasajes próximos.</p>
+                <a href="{% url 'home' %}" class="inline-block mt-4 bg-brand-red hover:bg-brand-darkred text-white font-bold px-8 py-3 rounded-xl transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                    Comprar un pasaje
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    {% if tickets %}
+    <div class="mt-8 bg-white rounded-[2rem] p-8 md:p-10 shadow-soft border border-gray-100" data-aos="fade-up" data-aos-delay="300">
+        <h2 class="text-2xl font-black text-brand-black mb-6">Historial</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="text-left text-gray-400 font-bold uppercase tracking-wide border-b border-gray-100">
+                        <th class="pb-3 pr-4">Código</th>
+                        <th class="pb-3 pr-4">Ruta</th>
+                        <th class="pb-3 pr-4">Fecha</th>
+                        <th class="pb-3 pr-4">Bajada</th>
+                        <th class="pb-3 pr-4">Precio</th>
+                        <th class="pb-3">Estado</th>
+                    </tr>
+                </thead>
+                <tbody class="text-brand-black">
+                    {% for ticket in tickets %}
+                    <tr class="border-b border-gray-50">
+                        <td class="py-3 pr-4 font-mono font-bold">{{ ticket.ticket_code }}</td>
+                        <td class="py-3 pr-4">{{ ticket.schedule.route.name }}</td>
+                        <td class="py-3 pr-4">{{ ticket.travel_date|date:"d/m/Y" }}</td>
+                        <td class="py-3 pr-4">{{ ticket.drop_off_stop.town.name }}</td>
+                        <td class="py-3 pr-4 font-bold">${{ ticket.price }}</td>
+                        <td class="py-3">
+                            {% if ticket.status == 'active' %}
+                                <span class="text-green-600 font-bold">Activo</span>
+                            {% elif ticket.status == 'cancelled' %}
+                                <span class="text-red-500 font-bold">Anulado</span>
+                            {% else %}
+                                <span class="text-gray-400 font-bold">Usado</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

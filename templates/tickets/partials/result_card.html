@@ -1,0 +1,45 @@
+{% load humanize %}
+<div class="bg-white rounded-tr-[2rem] rounded-bl-[2rem] rounded-tl-md rounded-br-md p-4 sm:p-6 shadow-sm hover:shadow-lg bus-card flex flex-col sm:flex-row items-center justify-between gap-4 relative group animate-list-entrance">
+    <div class="w-full flex-grow flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8">
+        <div class="flex items-center gap-2 sm:gap-5 w-full sm:w-auto justify-between sm:justify-start">
+            <div class="text-center w-24 sm:w-28 flex-shrink-0">
+                <h3 class="text-3xl md:text-4xl font-black text-brand-black tracking-tighter italic tabular-nums">{{ r.schedule.departure_time|time:"H:i" }}</h3>
+                <p class="text-xs text-gray-500 font-bold uppercase mt-1">Salida</p>
+            </div>
+            <div class="flex flex-col items-center px-1 flex-grow sm:flex-grow-0">
+                <span class="text-[11px] text-gray-400 font-bold uppercase mb-1">{{ r.route.name }}</span>
+                <div class="w-12 sm:w-16 md:w-20 h-[2px] bg-gray-200 relative">
+                    <div class="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-brand-red"></div>
+                </div>
+            </div>
+            <div class="text-center w-24 sm:w-28 flex-shrink-0">
+                <h3 class="text-3xl md:text-4xl font-black text-gray-400 tracking-tighter italic tabular-nums">{{ r.schedule.departure_time|time:"H:i" }}</h3>
+                <p class="text-xs text-gray-500 font-bold uppercase mt-1">Llegada aprox.</p>
+            </div>
+        </div>
+        <div class="hidden md:flex flex-col justify-center border-l-2 border-gray-100 pl-6 ml-2">
+            <p class="text-sm font-bold text-brand-black mb-1"><i class="fa-solid fa-circle-dot text-brand-red w-4"></i> {{ r.origin_town.name }}</p>
+            <p class="text-sm font-medium text-gray-500"><i class="fa-solid fa-location-dot text-gray-300 w-4"></i> {{ r.destination_town.name }}</p>
+        </div>
+    </div>
+    <div class="flex flex-col sm:items-end flex-shrink-0 mt-2 sm:mt-0 pt-4 sm:pt-0 border-t sm:border-t-0 border-gray-100 w-full sm:w-auto">
+        <div class="mb-3 sm:mb-2 w-full flex justify-between sm:justify-end items-center sm:items-end">
+            <span class="sm:hidden text-gray-400 text-xs font-bold uppercase tracking-wider">Tarifa</span>
+            <p class="text-3xl font-black text-brand-black tracking-tighter leading-none">${{ r.price|floatformat:"0"|intcomma }}</p>
+        </div>
+        <div class="flex flex-col items-center sm:items-end w-full">
+            <form action="{% url 'purchase' %}" method="POST" class="w-full sm:w-auto">
+                {% csrf_token %}
+                <input type="hidden" name="schedule_id" value="{{ r.schedule.id }}">
+                <input type="hidden" name="stop_id" value="{{ r.destination_stop.id }}">
+                <input type="hidden" name="travel_date" value="{{ search_date }}">
+                <button type="submit" class="bg-brand-red hover:bg-brand-darkred text-white w-full sm:w-auto px-8 h-12 sm:h-10 rounded-full font-black text-sm transition-colors uppercase outline-none active:scale-95 shadow-md flex items-center justify-center min-w-[120px]">
+                    Elegir
+                </button>
+            </form>
+            <div class="text-[10px] md:text-[11px] font-bold uppercase tracking-wider mt-2 sm:mt-1.5 text-center sm:text-right w-full text-gray-400">
+                desde {{ r.origin_town.name }}
+            </div>
+        </div>
+    </div>
+</div>

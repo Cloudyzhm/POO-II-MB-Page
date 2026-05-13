@@ -1,0 +1,68 @@
+<div>
+    <h3 class="font-black text-brand-black mb-3 flex items-center gap-2 text-lg">
+        <i class="fa-solid fa-location-dot text-brand-red"></i> Paradas
+        <span class="text-sm font-normal text-gray-400 ml-auto">{{ active_route.origin|default:'—' }} → {{ active_route.destination|default:'—' }}</span>
+    </h3>
+
+    <div class="bg-gray-50 rounded-xl p-4 border border-gray-100 mb-4">
+        <form method="POST" action="{% url 'company_dashboard' %}" class="space-y-3">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="save_stop">
+            <input type="hidden" name="route_id" value="{{ active_route.id }}">
+            {% if edit_stop %}<input type="hidden" name="stop_id" value="{{ edit_stop.id }}">{% endif %}
+            <div>
+                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Localidad</label>
+                <input type="text" name="town_name" value="{{ edit_stop.town.name|default:'' }}" list="towns-list" placeholder="Nombre o seleccionar..." required class="w-full bg-white border border-gray-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-brand-red/30 font-bold">
+                <datalist id="towns-list">
+                    {% for town in all_towns %}
+                    <option value="{{ town.name }}">
+                    {% endfor %}
+                </datalist>
+            </div>
+            <div class="flex gap-3">
+                <div class="flex-1">
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Orden</label>
+                    <input type="number" name="order" value="{% if edit_stop %}{{ edit_stop.order }}{% else %}{{ active_route.stops.all|length|add:1 }}{% endif %}" min="1" required class="w-full bg-white border border-gray-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-brand-red/30 font-bold">
+                </div>
+                <div class="flex-1">
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Precio desde origen ($)</label>
+                    <input type="number" name="price_from_origin" value="{{ edit_stop.price_from_origin|default:'0' }}" min="0" required class="w-full bg-white border border-gray-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-brand-red/30 font-bold">
+                </div>
+            </div>
+            <button type="submit" class="w-full bg-brand-red hover:bg-brand-darkred text-white font-bold py-3 rounded-xl transition-all">
+                {% if edit_stop %}Guardar parada{% else %}Agregar parada{% endif %}
+            </button>
+            {% if edit_stop %}
+            <a href="{% url 'company_dashboard' %}?tab=viajes&viaje_id={{ active_route.id }}" class="block text-center text-gray-400 hover:text-brand-red text-sm font-bold">Cancelar</a>
+            {% endif %}
+        </form>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+            <thead class="bg-gray-50">
+                <tr class="text-left text-gray-400 font-bold uppercase tracking-wide">
+                    <th class="p-3">#</th>
+                    <th class="p-3">Localidad</th>
+                    <th class="p-3">Precio</th>
+                    <th class="p-3 text-right">Acción</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                {% for stop in active_route.stops.all %}
+                <tr class="hover:bg-gray-50">
+                    <td class="p-3 font-bold text-brand-black">{{ stop.order }}</td>
+                    <td class="p-3">{{ stop.town.name }}</td>
+                    <td class="p-3 font-mono font-bold">${{ stop.price_from_origin }}</td>
+                    <td class="p-3 text-right whitespace-nowrap">
+                        <a href="{% url 'company_dashboard' %}?tab=viajes&viaje_id={{ active_route.id }}&edit_stop={{ stop.id }}" class="text-gray-500 hover:text-brand-black font-bold text-xs uppercase tracking-wider mr-2">Editar</a>
+                        <a href="{% url 'delete_stop' stop.id %}" class="text-red-400 hover:text-red-600 font-bold text-xs uppercase tracking-wider" onclick="return confirm('¿Eliminar esta parada?')">Eliminar</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4" class="p-4 text-center text-gray-400 text-xs">Sin paradas aún</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,58 @@
+<div class="border-t border-gray-100 pt-8">
+    <h3 class="font-black text-brand-black mb-3 flex items-center gap-2 text-lg">
+        <i class="fa-solid fa-clock text-brand-red"></i> Horarios
+    </h3>
+
+    <div class="bg-gray-50 rounded-xl p-4 border border-gray-100 mb-4">
+        <form method="POST" action="{% url 'company_dashboard' %}" class="space-y-3">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="save_schedule">
+            <input type="hidden" name="route_id" value="{{ active_route.id }}">
+            {% if edit_schedule %}<input type="hidden" name="schedule_id" value="{{ edit_schedule.id }}">{% endif %}
+            <div>
+                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Día</label>
+                <select name="day_type" required class="w-full bg-white border border-gray-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-brand-red/30 font-bold">
+                    <option value="weekday" {% if edit_schedule and edit_schedule.day_type == 'weekday' %}selected{% endif %}>Lunes a Viernes</option>
+                    <option value="saturday" {% if edit_schedule and edit_schedule.day_type == 'saturday' %}selected{% endif %}>Sábado</option>
+                    <option value="sunday" {% if edit_schedule and edit_schedule.day_type == 'sunday' %}selected{% endif %}>Domingo</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Hora de salida</label>
+                <input type="time" name="departure_time" value="{{ edit_schedule.departure_time|time:'H:i'|default:'' }}" required class="w-full bg-white border border-gray-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-brand-red/30 font-bold">
+            </div>
+            <button type="submit" class="w-full bg-brand-red hover:bg-brand-darkred text-white font-bold py-3 rounded-xl transition-all">
+                {% if edit_schedule %}Guardar horario{% else %}Agregar horario{% endif %}
+            </button>
+            {% if edit_schedule %}
+            <a href="{% url 'company_dashboard' %}?tab=viajes&viaje_id={{ active_route.id }}" class="block text-center text-gray-400 hover:text-brand-red text-sm font-bold">Cancelar</a>
+            {% endif %}
+        </form>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+            <thead class="bg-gray-50">
+                <tr class="text-left text-gray-400 font-bold uppercase tracking-wide">
+                    <th class="p-3">Día</th>
+                    <th class="p-3">Hora</th>
+                    <th class="p-3 text-right">Acción</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                {% for s in active_route.schedules.all %}
+                <tr class="hover:bg-gray-50">
+                    <td class="p-3">{{ s.get_day_type_display }}</td>
+                    <td class="p-3 font-mono font-bold">{{ s.departure_time|time:"H:i" }}</td>
+                    <td class="p-3 text-right whitespace-nowrap">
+                        <a href="{% url 'company_dashboard' %}?tab=viajes&viaje_id={{ active_route.id }}&edit_schedule={{ s.id }}" class="text-gray-500 hover:text-brand-black font-bold text-xs uppercase tracking-wider mr-2">Editar</a>
+                        <a href="{% url 'delete_schedule' s.id %}" class="text-red-400 hover:text-red-600 font-bold text-xs uppercase tracking-wider" onclick="return confirm('¿Eliminar este horario?')">Eliminar</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="3" class="p-4 text-center text-gray-400 text-xs">Sin horarios aún</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

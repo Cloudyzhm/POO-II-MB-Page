@@ -1,0 +1,23 @@
+<div id="map-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 sm:p-6">
+    <div class="absolute inset-0 bg-brand-black/90 backdrop-blur-sm cursor-pointer transition-opacity" onclick="closeMapModal()"></div>
+    <div class="bg-white rounded-[2rem] shadow-2xl relative w-full max-w-5xl h-[70vh] md:h-[80vh] flex flex-col overflow-hidden transform scale-95 opacity-0 transition-all duration-300 border border-gray-200" id="map-modal-content">
+        <div class="px-6 py-4 bg-white text-brand-black flex justify-between items-center border-b border-gray-100">
+            <h3 class="font-black text-xl flex items-center">
+                <div class="w-8 h-8 rounded-full bg-brand-red/10 flex items-center justify-center text-brand-red mr-3 text-sm">
+                    <i class="fa-solid fa-location-dot"></i>
+                </div>
+                <span id="map-modal-title-text">Ubicación</span>
+            </h3>
+            <button onclick="closeMapModal()" class="text-gray-400 hover:text-brand-red hover:bg-red-50 transition-colors w-10 h-10 flex items-center justify-center rounded-full outline-none">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+        <div class="flex-grow w-full h-full relative bg-gray-50">
+            <div class="absolute inset-0 flex flex-col items-center justify-center z-0 text-brand-red">
+                <i class="fa-solid fa-spinner fa-spin text-4xl mb-4"></i>
+                <span class="text-sm font-bold text-gray-500">Cargando mapa...</span>
+            </div>
+            <iframe id="map-iframe" src="" class="w-full h-full border-0 relative z-10" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+</div>

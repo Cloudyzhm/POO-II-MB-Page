@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Pasajes - Panel Empresa{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-12">
+    <div class="flex items-center gap-4 mb-10">
+        <a href="{% url 'company_dashboard' %}" class="text-gray-400 hover:text-brand-red transition-colors"><i class="fa-solid fa-arrow-left text-xl"></i></a>
+        <h1 class="text-4xl font-black text-brand-black">Pasajes vendidos</h1>
+    </div>
+
+    <div class="bg-white rounded-[2rem] shadow-soft border border-gray-100 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="bg-gray-50">
+                    <tr class="text-left text-gray-400 font-bold uppercase tracking-wide">
+                        <th class="p-4">Código</th>
+                        <th class="p-4">Pasajero</th>
+                        <th class="p-4">Ruta</th>
+                        <th class="p-4">Bajada</th>
+                        <th class="p-4">Fecha viaje</th>
+                        <th class="p-4">Hora</th>
+                        <th class="p-4">Precio</th>
+                        <th class="p-4">Compra</th>
+                        <th class="p-4">Estado</th>
+                        <th class="p-4 text-right">Acción</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    {% for t in tickets %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="p-4 font-mono font-bold text-brand-black">{{ t.ticket_code }}</td>
+                        <td class="p-4">{{ t.user.username }}</td>
+                        <td class="p-4">{{ t.schedule.route.name }}</td>
+                        <td class="p-4">{{ t.drop_off_stop.town.name }}</td>
+                        <td class="p-4">{{ t.travel_date|date:"d/m/Y" }}</td>
+                        <td class="p-4 font-mono">{{ t.schedule.departure_time|time:"H:i" }}</td>
+                        <td class="p-4 font-bold">${{ t.price }}</td>
+                        <td class="p-4 text-xs">{{ t.purchase_date|date:"d/m/Y H:i" }}</td>
+                        <td class="p-4">
+                            {% if t.status == 'active' %}
+                                <span class="text-green-600 font-bold">Activo</span>
+                            {% elif t.status == 'cancelled' %}
+                                <span class="text-red-500 font-bold">Anulado</span>
+                            {% else %}
+                                <span class="text-gray-400 font-bold">Usado</span>
+                            {% endif %}
+                        </td>
+                        <td class="p-4 text-right">
+                            {% if t.status == 'active' %}
+                            <a href="{% url 'mark_ticket_used' t.id %}" class="text-brand-red hover:text-brand-darkred font-bold text-xs uppercase tracking-wider" onclick="return confirm('¿Marcar pasaje {{ t.ticket_code }} como usado?')">Usado</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="10" class="p-8 text-center text-gray-400">No hay pasajes vendidos.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

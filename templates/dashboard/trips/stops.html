@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Paradas - {{ route.name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-12">
+    <div class="flex items-center gap-4 mb-10">
+        <a href="{% url 'company_dashboard' %}?tab=viajes" class="text-gray-400 hover:text-brand-red transition-colors"><i class="fa-solid fa-arrow-left text-xl"></i></a>
+        <div>
+            <h1 class="text-4xl font-black text-brand-black">Paradas</h1>
+            <p class="text-gray-500">{{ route.origin|default:'—' }} → {{ route.destination|default:'—' }}</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2">
+            <div class="bg-white rounded-[2rem] shadow-soft border border-gray-100 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50">
+                            <tr class="text-left text-gray-400 font-bold uppercase tracking-wide">
+                                <th class="p-4">Orden</th>
+                                <th class="p-4">Localidad</th>
+                                <th class="p-4">Precio desde origen</th>
+                                <th class="p-4 text-right">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            {% for stop in stops %}
+                            <tr class="hover:bg-gray-50">
+                                <td class="p-4 font-bold text-brand-black">{{ stop.order }}</td>
+                                <td class="p-4">{{ stop.town.name }}</td>
+                                <td class="p-4 font-mono font-bold">${{ stop.price_from_origin }}</td>
+                                <td class="p-4 text-right">
+                                    <a href="{% url 'manage_stops' route.id %}?edit={{ stop.id }}" class="text-gray-500 hover:text-brand-black font-bold text-xs uppercase tracking-wider mr-3">Editar</a>
+                                    <a href="{% url 'delete_stop' stop.id %}" class="text-red-400 hover:text-red-600 font-bold text-xs uppercase tracking-wider" onclick="return confirm('¿Eliminar esta parada?')">Eliminar</a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="4" class="p-8 text-center text-gray-400">No hay paradas. Agrega al menos una.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="bg-white rounded-[2rem] p-6 shadow-soft border border-gray-100 sticky top-32">
+                <h3 class="font-black text-brand-black text-lg mb-4">{% if edit_stop %}Editar parada{% else %}Nueva parada{% endif %}</h3>
+                <form method="POST" class="space-y-4">
+                    {% csrf_token %}
+                    {% if edit_stop %}<input type="hidden" name="stop_id" value="{{ edit_stop.id }}">{% endif %}
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Localidad</label>
+                        <select name="town" required class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-brand-red/30 font-bold">
+                            <option value="">Seleccionar...</option>
+                            {% for town in all_towns %}
+                            <option value="{{ town.id }}" {% if edit_stop and edit_stop.town.id == town.id %}selected{% endif %}>{{ town.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Orden</label>
+                        <input type="number" name="order" value="{{ edit_stop.order|default:stops|length|add:1 }}" min="1" required class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-brand-red/30 font-bold">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Precio desde origen ($)</label>
+                        <input type="number" name="price_from_origin" value="{{ edit_stop.price_from_origin|default:'0' }}" min="0" required class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-brand-red/30 font-bold">
+                    </div>
+                    <button type="submit" class="w-full bg-brand-red hover:bg-brand-darkred text-white font-bold py-3 rounded-xl transition-all">
+                        {% if edit_stop %}Guardar{% else %}Agregar parada{% endif %}
+                    </button>
+                    {% if edit_stop %}
+                    <a href="{% url 'manage_stops' route.id %}" class="block text-center text-gray-400 hover:text-brand-red text-sm font-bold">Cancelar</a>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

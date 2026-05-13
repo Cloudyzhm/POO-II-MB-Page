@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magabus - Base de datos no disponible</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { red: '#e60000', darkred: '#b30000', black: '#0a0a0a', dark: '#1a1a1a', gray: '#f5f5f5' }
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="antialiased font-sans bg-brand-black min-h-screen flex items-center justify-center p-4">
+    <div class="text-center max-w-lg">
+        <div class="w-20 h-20 bg-brand-red/10 rounded-full flex items-center justify-center mx-auto mb-8">
+            <i class="fa-solid fa-database text-4xl text-brand-red"></i>
+        </div>
+        <h1 class="text-5xl md:text-6xl font-black text-white mb-4">Error de conexión</h1>
+        <p class="text-gray-400 text-lg mb-8 leading-relaxed">
+            No se pudo conectar a la base de datos. Si borraste <code class="bg-white/10 px-2 py-1 rounded text-brand-red font-bold">db.sqlite3</code>, ejecuta:
+        </p>
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-6 mb-8 text-left">
+            <code class="text-white text-sm md:text-base font-mono">
+                python manage.py migrate<br>
+                python manage.py seed_data
+            </code>
+        </div>
+        <a href="/" class="inline-block bg-brand-red hover:bg-brand-darkred text-white px-8 py-4 rounded-xl font-bold transition-all shadow-md hover:shadow-lg">
+            <i class="fa-solid fa-rotate-left mr-2"></i> Reintentar
+        </a>
+    </div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</body>
+</html>

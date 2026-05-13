@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Panel Empresa - Magabus{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-12">
+    <div class="mb-8" data-aos="fade-up">
+        <h1 class="text-4xl font-black text-brand-black">Panel de <span class="text-brand-red">Empresa</span></h1>
+        <p class="text-gray-500 mt-2">Gestión de viajes, horarios, localidades y pasajes.</p>
+    </div>
+
+    {% include 'dashboard/partials/stats_row.html' %}
+
+    <div class="bg-white rounded-[2rem] shadow-soft border border-gray-100 overflow-hidden">
+        {% include 'dashboard/partials/tab_nav.html' %}
+        {% include 'dashboard/partials/tab_viajes.html' %}
+        {% include 'dashboard/partials/tab_pasajes.html' %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/dashboard.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,56 @@
+<div id="panel-viajes" class="tab-content p-8">
+    <div class="flex flex-col lg:flex-row gap-8">
+        <div class="{% if active_route %}lg:w-1/2{% endif %} flex-shrink-0 min-w-0">
+            <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100 mb-8">
+                <h3 class="font-black text-brand-black text-lg mb-4">
+                    {% if edit_route %}Editar viaje{% else %}Nuevo viaje{% endif %}
+                </h3>
+                {% include 'dashboard/partials/viaje_form.html' %}
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-50">
+                        <tr class="text-left text-gray-400 font-bold uppercase tracking-wide">
+                            <th class="p-4">Recorrido</th>
+                            <th class="p-4">Paradas</th>
+                            <th class="p-4">Horarios</th>
+                            <th class="p-4 text-right">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        {% for route in routes %}
+                        <tr class="hover:bg-gray-50 {% if active_route and active_route.id == route.id %}bg-brand-red/5{% endif %}">
+                            <td class="p-4">
+                                {% with stops=route.stops.all %}
+                                {% if stops %}
+                                    {% for stop in stops %}
+                                        <span class="inline-block bg-gray-100 text-gray-700 text-xs font-bold px-2 py-1 rounded-full mr-1 mb-1">{{ stop.town.name }}</span>
+                                    {% endfor %}
+                                {% else %}
+                                    <span class="text-gray-400 text-xs">Sin paradas</span>
+                                {% endif %}
+                                {% endwith %}
+                            </td>
+                            <td class="p-4">{{ route.stop_count }}</td>
+                            <td class="p-4">{{ route.schedules.count }}</td>
+                            <td class="p-4 text-right whitespace-nowrap">
+                                <a href="{% url 'company_dashboard' %}?tab=viajes&viaje_id={{ route.id }}" class="text-gray-500 hover:text-brand-black font-bold text-xs uppercase tracking-wider mr-2">Editar</a>
+                                <a href="{% url 'delete_route' route.id %}" class="text-red-400 hover:text-red-600 font-bold text-xs uppercase tracking-wider" onclick="return confirm('¿Eliminar este viaje y todos sus datos?')">Eliminar</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="4" class="p-8 text-center text-gray-400">No hay viajes creados.
+                            <br><span class="text-xs">Usa el formulario de arriba para crear uno.</span>
+                        </td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        {% if active_route %}
+        {% include 'dashboard/partials/viaje_panel.html' %}
+        {% endif %}
+    </div>
+</div>

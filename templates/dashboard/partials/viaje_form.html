@@ -1,0 +1,15 @@
+<form method="POST" action="{% url 'company_dashboard' %}" class="flex flex-col md:flex-row gap-4 items-end">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="save_route">
+    {% if edit_route %}<input type="hidden" name="route_id" value="{{ edit_route.id }}">{% endif %}
+    <div class="flex-1 w-full">
+        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Descripción del viaje</label>
+        <input type="text" name="description" value="{{ edit_route.description|default:'' }}" placeholder="Ej: Servicio directo Concepción → Coelemu" class="w-full bg-white border border-gray-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-brand-red/30 font-bold">
+    </div>
+    <button type="submit" class="bg-brand-red hover:bg-brand-darkred text-white font-bold px-8 py-3 rounded-xl transition-all whitespace-nowrap">
+        {% if edit_route %}Guardar{% else %}Crear viaje{% endif %}
+    </button>
+    {% if edit_route %}
+    <a href="{% url 'company_dashboard' %}?tab=viajes" class="text-gray-400 hover:text-brand-red transition-colors text-sm font-bold px-4 py-3">Cancelar</a>
+    {% endif %}
+</form>

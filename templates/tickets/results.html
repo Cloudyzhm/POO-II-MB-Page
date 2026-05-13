@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}Resultados - Magabus{% endblock %}
+
+{% block content %}
+{% include 'tickets/partials/results_header.html' %}
+
+<main class="max-w-5xl mx-auto px-4 mt-8 mb-20">
+    {% if results %}
+    <div class="space-y-4">
+        {% for r in results %}
+        {% include 'tickets/partials/result_card.html' %}
+        {% endfor %}
+    </div>
+    {% else %}
+    {% include 'tickets/partials/results_empty.html' %}
+    {% endif %}
+</main>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.querySelectorAll('.bus-card').forEach((card, i) => {
+        card.style.animationDelay = `${Math.min(i * 0.08, 0.8)}s`;
+    });
+</script>
+{% endblock %}

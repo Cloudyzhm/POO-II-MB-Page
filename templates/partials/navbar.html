@@ -1,0 +1,67 @@
+<nav id="main-nav" class="bg-brand-black text-white sticky top-0 z-50 border-b border-transparent transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-20 items-center">
+            <div class="flex-shrink-0 flex items-center">
+                <a href="{% url 'home' %}" class="flex items-center group">
+                    <img src="https://ayaya.beauty/-/file/E9JTp" alt="Logo Magabus" class="h-12 md:h-14 w-auto group-hover:scale-105 transition-transform duration-300">
+                </a>
+            </div>
+            <div class="hidden lg:flex space-x-8 items-center">
+                <a href="{% url 'home' %}" class="text-gray-300 hover:text-white font-semibold transition-colors uppercase tracking-wider text-xs">Inicio</a>
+                <a href="#" class="text-gray-300 hover:text-white font-semibold transition-colors uppercase tracking-wider text-xs">Nosotros</a>
+                <a href="#" class="text-gray-300 hover:text-white font-semibold transition-colors uppercase tracking-wider text-xs">Condiciones del servicio</a>
+                <a href="#ayuda" class="text-gray-300 hover:text-white font-semibold transition-colors uppercase tracking-wider text-xs">Contacto</a>
+                {% if user.is_authenticated and user.user_type == 'company' or user.user_type == 'admin' %}
+                    <a href="{% url 'company_dashboard' %}" class="text-brand-red hover:text-white font-semibold transition-colors uppercase tracking-wider text-xs">Empresa</a>
+                {% endif %}
+            </div>
+            <div class="hidden lg:flex items-center gap-3">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard' %}" class="bg-brand-red hover:bg-brand-darkred text-white px-6 py-2.5 rounded-full font-bold transition-all shadow-md hover:shadow-lg flex items-center outline-none transform hover:-translate-y-0.5">
+                        <i class="fa-solid fa-user mr-2 text-sm"></i> {{ user.username }}
+                    </a>
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="text-gray-400 hover:text-white transition-colors text-sm font-semibold">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                        </button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="bg-brand-red hover:bg-brand-darkred text-white px-6 py-2.5 rounded-full font-bold transition-all shadow-md hover:shadow-lg flex items-center outline-none transform hover:-translate-y-0.5">
+                        <i class="fa-solid fa-user mr-2 text-sm"></i> Mi Cuenta
+                    </a>
+                {% endif %}
+            </div>
+            <div class="lg:hidden flex items-center">
+                <button id="mobile-menu-btn" class="text-gray-300 hover:text-white focus:outline-none transition-colors">
+                    <i class="fa-solid fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="mobile-menu" class="hidden lg:hidden absolute top-full left-0 w-full bg-brand-black/95 backdrop-blur-md border-t border-gray-800 shadow-2xl">
+        <div class="px-6 pt-4 pb-6 space-y-4">
+            <a href="{% url 'home' %}" class="text-gray-300 block py-2 text-sm font-semibold border-b border-gray-800">Inicio</a>
+            <a href="#" class="text-gray-300 block py-2 text-sm font-semibold border-b border-gray-800">Nosotros</a>
+            <a href="#" class="text-gray-300 block py-2 text-sm font-semibold border-b border-gray-800">Condiciones del servicio</a>
+            <a href="#ayuda" class="text-gray-300 block py-2 text-sm font-semibold border-b border-gray-800">Contacto</a>
+            <div class="pt-4 space-y-3">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard' %}" class="bg-brand-red hover:bg-brand-darkred text-white w-full py-3 rounded-full font-bold transition-all shadow-md hover:shadow-lg flex items-center justify-center outline-none transform hover:-translate-y-0.5">
+                        <i class="fa-solid fa-user mr-2 text-sm"></i> {{ user.username }}
+                    </a>
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="w-full text-gray-400 hover:text-white py-2 text-sm font-semibold transition-colors">
+                            <i class="fa-solid fa-right-from-bracket mr-2"></i> Cerrar sesión
+                        </button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="bg-brand-red hover:bg-brand-darkred text-white w-full py-3 rounded-full font-bold transition-all shadow-md hover:shadow-lg flex items-center justify-center outline-none transform hover:-translate-y-0.5">
+                        <i class="fa-solid fa-user mr-2 text-sm"></i> Mi Cuenta
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
